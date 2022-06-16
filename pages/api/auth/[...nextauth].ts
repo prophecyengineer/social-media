@@ -33,7 +33,7 @@ const configuration = {
         try {
           const user = await prisma.users.findFirst({
             where: {
-              email: credentials.email,
+              username: credentials.username,
             },
           });
 
@@ -46,12 +46,14 @@ const configuration = {
             if (res === true) {
               userAccount = {
                 userId: user.userId,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                name: user.name,
+                username: user.username,
                 email: user.email,
                 isActive: user.isActive,
               };
               return userAccount;
+            } else {
+              return null;
             }
           } else {
             console.log("Hash not matched logging in");
@@ -79,5 +81,11 @@ const configuration = {
     signIn: "/", //Need to define custom login page (if using)
   },
 };
+
+
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default (req: NextAuthOptions | NextApiRequest, res: NextApiResponse<any>) => NextAuth(req, res, configuration);
+export default (
+  req: NextAuthOptions | NextApiRequest,
+  res: NextApiResponse<any>
+) => NextAuth(req, res, configuration);

@@ -9,8 +9,10 @@ const axios = require("axios").default;
 export default function Register() {
   const router = useRouter();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [signupError, setSignupError] = useState('');
+
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,15 +20,15 @@ export default function Register() {
     event.preventDefault();
 
     const data = {
-      firstName: firstName,
-      lastName: lastName,
+      name: name,
+      username: username,
       email: email,
       password: password,
     };
 
     await axios.post("/api/register", data);
     signIn("credentials", {
-      email,
+      username,
       password,
       callbackUrl: `${window.location.origin}/home`,
       redirect: false,
@@ -36,6 +38,7 @@ export default function Register() {
       })
       .catch((err) => {
         alert("Failed to register: " + err.toString());
+        
       });
   };
 
@@ -45,19 +48,19 @@ export default function Register() {
 
       <form onSubmit={registerUser}>
         <label>
-          First Name:{" "}
+          Name:{" "}
           <input
             type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </label>
         <label>
-          Last Name:{" "}
+          UserName:{" "}
           <input
             type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </label>
         <label>

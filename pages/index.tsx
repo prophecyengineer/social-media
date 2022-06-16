@@ -6,8 +6,8 @@ import {signIn} from "next-auth/react";
 
 export default function Home() {
 
-  const [user, setUser] = useState('');
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  // const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function Home() {
     event.stopPropagation();
 
     signIn("credentials", {
-        email, password, callbackUrl: `${window.location.origin}/home`, redirect: false }
+        username, password, callbackUrl: `${window.location.origin}/home`, redirect: false }
     ).then(function(result){
         if (result.error !== null)
         {
@@ -41,7 +41,7 @@ export default function Home() {
       <form onSubmit={handleLogin}>
         {loginError}
         <label>
-          Email: <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
+          Username: <input type='text' value={username} onChange={(e) => setUsername(e.target.value)} />
         </label>
         <label>
           Password: <input type='password' value={password} onChange={(e) => setPassword(e.target.value)} />

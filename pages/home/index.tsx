@@ -8,9 +8,11 @@ import {signOut, useSession} from "next-auth/react";
 import Link from 'next/link'
 import {useRouter} from "next/router";
 import { Container, Card, Button, Grid } from "@nextui-org/react";
+import { PrismaClient } from "@prisma/client";
+import getAllUsers from "../api/getAllUsers";
 
 
-const Home: NextPage = (props) => {
+const Home: NextPage = ({users}) => {
 
   return (
     <>
@@ -23,10 +25,12 @@ const Home: NextPage = (props) => {
 
         <main className={styles.main}>
           <h1 className={styles.title}> Home  </h1>
-
-          <p className={styles.description}>
-            hello world
-          </p>
+          <ul> 
+   {users.map(user => (
+  
+     <li key={user.id}>{user.username}</li>
+    ))}
+  </ul>
 
           <Card className={styles.header}>
               <Button  onClick={signOut}>Sign Out</Button>
@@ -40,5 +44,30 @@ const Home: NextPage = (props) => {
     </>
   );
 };
+
+export async function getServerSideProps() {
+  const prisma = new PrismaClient()
+
+  const users = await prisma.users.findMany()
+  // const users = await res.json()
+
+  return {
+    props: {
+
+      users: users.map((user: user) => ({
+
+          ...user,
+          username: user.username.toString(),
+          name: user.name.toString(),
+          email: user.email.toString(),
+          registeredAt: user.registeredAt.toISOString(),
+        
+      
+
+      } as unknown as user)),
+
+  }
+  };
+}
 
 export default Home;
