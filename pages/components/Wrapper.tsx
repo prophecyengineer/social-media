@@ -4,8 +4,10 @@ import Link from 'next/link'
 import {useRouter} from "next/router";
 
 export default function Wrapper(props)
+
 {
     const session = useSession();
+    // console.log('session',session.data?.user?.username)
     const router = useRouter();
 
     if ((session !== null && session?.status === "authenticated") ||

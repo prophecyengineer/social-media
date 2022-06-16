@@ -2,9 +2,11 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 import { connect } from "getstream";
+import stream from "stream";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY as string;
 const apiSecret = process.env.REACT_APP_STREAM_APP_SECRET as string;
+const appID = process.env.NEXT_PUBLIC_STREAM_APP_ID as string;
 //     process.env.REACT_APP_STREAM_APP_SECRET,
 //     process.env.REACT_APP_STREAM_APP_ID,
 //     { location: 'us-east' },
@@ -21,6 +23,9 @@ export default async (req, res) => {
       const userToken = client.createUserToken(username);
       console.log("make a stream token with", username, userToken);
       const hash = await bcrypt.hash(password, 0);
+       //this DID add a user!!! 
+  client.user(username.username);
+
       await prisma.users.create({
         data: {
           name: name,

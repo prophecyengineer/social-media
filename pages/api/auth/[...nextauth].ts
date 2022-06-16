@@ -49,6 +49,7 @@ const configuration = {
                 name: user.name,
                 username: user.username,
                 email: user.email,
+                userToken: user.userToken,
                 isActive: user.isActive,
               };
               return userAccount;
@@ -68,12 +69,12 @@ const configuration = {
   callbacks: {
     jwt: async ({ token, user }) => {
       user && (token.user = user);
-      console.log("token", token);
+      // console.log("token", token);
       return token;
     },
     session: async ({ session, token }) => {
       session.user = token.user; // Setting token in session
-      console.log("session", session);
+      // console.log("session", session);
       return session;
     },
   },

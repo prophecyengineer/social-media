@@ -3,26 +3,14 @@
   const appID = process.env.NEXT_PUBLIC_STREAM_APP_ID as string;
   const apiSecret = process.env.REACT_APP_STREAM_APP_SECRET as string;
 
-  export default async (req, res) => {
 
 let stream = require('getstream');
-const client = stream.connect(apiKey, appID, apiSecret);
-let feed = client.feed('timeline', 'lottie');
-feed.addActivity({
-    'actor': client.user('lottie').ref(),
-    'verb': 'post',
-    'object': 'I love this picture',
-    'attachments': {
-        'og': {
-            'title': 'Crozzon di Brenta photo by Lorenzo Spoleti',
-            'description': 'Download this photo in Italy by Lorenzo Spoleti',
-            'url': 'https://unsplash.com/photos/yxKHOTkAins',
-            'images': [
-                {
-                    'image': 'https://goo.gl/7dePYs'
-                }
-            ]
-        }
-    }
-})
-  }
+
+export default async (req, res) => {
+
+
+// npm install getstream --save
+// let stream = require('getstream');
+
+
+}

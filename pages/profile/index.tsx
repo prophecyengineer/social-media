@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Container, Card, Button, Grid } from "@nextui-org/react";
 import { PrismaClient } from "@prisma/client";
+import 'react-activity-feed/dist/index.css';
+
 import {
   StreamApp,
   NotificationDropdown,
@@ -23,37 +25,20 @@ import {
 import stream from "getstream";
 
 
-
 const Profile: NextPage = ({ users }) => {
-  // console.log('user token', users.userToken)
 
-  const streamString = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibG92ZSJ9.BOh_67awXrCQuLYUhVJZ3D8U-DD4eHgedgXmB0jhsEQ";
+  // console.log('user token', users.userToken)
+  const session = useSession();
+  // console.log('session',session.data?.user)
+  console.log('session',session.data?.user?.userToken)
+
+  const streamString = (session.data?.user?.userToken)
   const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY as string;
   const appID = process.env.NEXT_PUBLIC_STREAM_APP_ID as string;
+
+    
  
-//this DID add a user!!!
-  // const client = stream.connect(apiKey, streamString, appID);
-  // client.user(users[2].userId).update({ name: `${users[2].name} `, profileImage: `https://placekitten.com/200/300` });
 
-
-// let feed = client.feed('timeline', 'love');
-// feed.addActivity({
-//     'actor': client.user('love').ref(),
-//     'verb': 'post',
-//     'object': 'I love this picture',
-//     'attachments': {
-//         'og': {
-//             'title': 'Crozzon di Brenta photo by Lorenzo Spoleti',
-//             'description': 'Download this photo in Italy by Lorenzo Spoleti',
-//             'url': 'https://unsplash.com/photos/yxKHOTkAins',
-//             'images': [
-//                 {
-//                     'image': 'https://goo.gl/7dePYs'
-//                 }
-//             ]
-//         }
-//     }
-// })
   return (
     <>
       <div className={styles.container}>
@@ -64,18 +49,28 @@ const Profile: NextPage = ({ users }) => {
         </Head>
 
         <main className={styles.main}>
-          <h1 className={styles.title}>  Profile </h1>
-          <h1 className={styles.title}> {users[2].username} {users[2].userToken}</h1>
-          
-        
-          <StreamApp apiKey={apiKey} appId={appID} token={streamString}>
-          <StatusUpdateForm />
+          <h1 className={styles.title}> Profile of {session.data?.user?.name} </h1>
+          {/* <h1 className={styles.title}>
+            {" "}
+            {users[2].username} {users[2].userToken}
+          </h1> */}
 
-          {/* <NotificationDropdown notify /> */}
-          <FlatFeed notify feedGroup="user"/>
-          
-        
-         
+          <StreamApp apiKey={apiKey} appId={appID} token={streamString}>
+            <StatusUpdateForm />
+
+            {/* <NotificationDropdown notify /> */}
+            <FlatFeed notify feedGroup="user"  Activity={(props) => (
+            <Activity
+              {...props}
+              Footer={() => (
+                <div style={{ padding: '8px 16px' }}>
+                  <LikeButton {...props} />
+                  <CommentField activity={props.activity} onAddReaction={props.onAddReaction} />
+                  <CommentList activityId={props.activity.id} />
+                </div>
+              )}
+            />
+          )}/>
           </StreamApp>
           <Card className={styles.header}>
             <Button onClick={signOut}>Sign Out</Button>
@@ -86,27 +81,27 @@ const Profile: NextPage = ({ users }) => {
   );
 };
 
-export async function getServerSideProps() {
-  const prisma = new PrismaClient();
+// export async function getServerSideProps() {
+//   const prisma = new PrismaClient();
 
-  const users = await prisma.users.findMany();
-  // const users = await prisma.users.findMany();
-  // const users = await res.json()
+//   const users = await prisma.users.findMany();
+//   // const users = await prisma.users.findMany();
+//   // const users = await res.json()
 
-  return {
-    props: {
-      users: users.map(
-        (user: user) =>
-          ({
-            ...user,
-            username: user.username.toString(),
-            name: user.name.toString(),
-            email: user.email.toString(),
-            registeredAt: user.registeredAt.toISOString(),
-          } as unknown as user)
-      ),
-    },
-  };
-}
+//   return {
+//     props: {
+//       users: users.map(
+//         (user: user) =>
+//           ({
+//             ...user,
+//             username: user.username.toString(),
+//             name: user.name.toString(),
+//             email: user.email.toString(),
+//             registeredAt: user.registeredAt.toISOString(),
+//           } as unknown as user)
+//       ),
+//     },
+//   };
+// }
 
 export default Profile;
