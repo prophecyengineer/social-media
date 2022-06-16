@@ -1,6 +1,7 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import { PrismaClient } from "@prisma/client";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { NextApiRequest, NextApiResponse } from "next";
 let userAccount = null;
 
 const prisma = new PrismaClient();
@@ -51,15 +52,13 @@ const configuration = {
                 isActive: user.isActive,
               };
               return userAccount;
-            } else {
-              console.log("Hash not matched logging in");
-              return null;
             }
           } else {
+            console.log("Hash not matched logging in");
             return null;
           }
-        } catch (err) {
-          console.log("Authorize error:", err);
+        } catch (error) {
+          return null;
         }
       },
     }),
@@ -67,19 +66,18 @@ const configuration = {
   callbacks: {
     jwt: async ({ token, user }) => {
       user && (token.user = user);
-      console.log('token', token)
+      console.log("token", token);
       return token;
     },
     session: async ({ session, token }) => {
-      session.user = token.user;  // Setting token in session
-      console.log('session', session)
+      session.user = token.user; // Setting token in session
+      console.log("session", session);
       return session;
     },
   },
   pages: {
     signIn: "/", //Need to define custom login page (if using)
-    
   },
- 
 };
-export default (req, res) => NextAuth(req, res, configuration);
+// eslint-disable-next-line import/no-anonymous-default-export
+export default (req: NextAuthOptions | NextApiRequest, res: NextApiResponse<any>) => NextAuth(req, res, configuration);
