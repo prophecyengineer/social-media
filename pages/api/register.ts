@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 import { connect } from "getstream";
 
-const apiKey = process.env.REACT_APP_STREAM_API_KEY as string;
+const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY as string;
 const apiSecret = process.env.REACT_APP_STREAM_APP_SECRET as string;
 //     process.env.REACT_APP_STREAM_APP_SECRET,
 //     process.env.REACT_APP_STREAM_APP_ID,

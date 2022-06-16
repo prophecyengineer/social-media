@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import styles from "./Home.module.css";
+import styles from "./Profile.module.css";
 import { userInfo } from "os";
 import * as React from "react";
 import { signOut, useSession } from "next-auth/react";
@@ -9,11 +9,28 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Container, Card, Button, Grid } from "@nextui-org/react";
 import { PrismaClient } from "@prisma/client";
+import {
+  StreamApp,
+  NotificationDropdown,
+  FlatFeed,
+  LikeButton,
+  Activity,
+  CommentList,
+  CommentField,
+  StatusUpdateForm,
+  FollowButton,
+} from "react-activity-feed";
+import stream from "getstream";
 
 
 
-const Home: NextPage = ({ users }) => {
+const Profile: NextPage = ({ users }) => {
+  // console.log('user token', users.userToken)
 
+  const streamString = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibG90dGllIn0.1GfqRl6bJFhK-oQdsbHM-GVBvDLhROxp0Gi1N1qLC40";
+  const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY as string;
+  const appID = process.env.NEXT_PUBLIC_STREAM_APP_ID as string;
+ 
   return (
     <>
       <div className={styles.container}>
@@ -24,15 +41,28 @@ const Home: NextPage = ({ users }) => {
         </Head>
 
         <main className={styles.main}>
-          <h1 className={styles.title}> Home </h1>
-          <ul>
-            {users.map((user) => (
-              <li className={styles.title} key={user.id}>
-                {user.username} {user.userToken}
-              </li>
-            ))}
-          </ul>
-
+          <h1 className={styles.title}>  Profile </h1>
+          <h1 className={styles.title}> {users[0].userToken}</h1>
+          
+        
+          <StreamApp apiKey={apiKey} appId={appID} token={streamString}>
+          {/* <NotificationDropdown notify /> */}
+          <FlatFeed
+          feedGroup="timeline"
+          notify
+          Activity={(props) => (
+            <Activity
+              {...props}
+              Footer={() => (
+                <div style={{ padding: '8px 16px' }}>
+                  <LikeButton {...props} />
+                </div>
+              )}
+            />
+          )}
+        />
+         
+          </StreamApp>
           <Card className={styles.header}>
             <Button onClick={signOut}>Sign Out</Button>
           </Card>
@@ -46,6 +76,7 @@ export async function getServerSideProps() {
   const prisma = new PrismaClient();
 
   const users = await prisma.users.findMany();
+  // const users = await prisma.users.findMany();
   // const users = await res.json()
 
   return {
@@ -64,4 +95,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default Home;
+export default Profile;
