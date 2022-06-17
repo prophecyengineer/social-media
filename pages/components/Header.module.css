@@ -1,0 +1,12 @@
+.header {
+  position: sticky;
+  top: 0;
+}
+
+.menu {
+  align-items: center;
+  justify-content: center;
+  position: sticky !important;
+  top: 0;
+  overflow: hidden;
+}

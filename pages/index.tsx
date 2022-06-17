@@ -12,6 +12,7 @@ export default function Home() {
   const [loginError, setLoginError] = useState('');
   const router = useRouter();
 
+  
   const handleLogin = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -48,7 +49,7 @@ export default function Home() {
         </label>
         <button type='submit'>Submit login</button>
 
-          <Link href='/register'>Register</Link>
+          <Link href='/signup'>Sign Up instead?</Link>
       </form>
   )
 }

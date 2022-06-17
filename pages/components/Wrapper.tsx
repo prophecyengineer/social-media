@@ -11,7 +11,7 @@ export default function Wrapper(props)
     const router = useRouter();
 
     if ((session !== null && session?.status === "authenticated") ||
-        (router.pathname === "/" || router.pathname === '/register'))
+        (router.pathname === "/" || router.pathname === '/signup'))
     {
         return (
             props.children

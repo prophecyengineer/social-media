@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import styles from "./Profile.module.css";
+import styles from "./Notifications.module.css";
 import { userInfo } from "os";
 import * as React from "react";
 import { signOut, useSession } from "next-auth/react";
@@ -25,18 +25,19 @@ import {
 import stream from "getstream";
 
 
-const Profile: NextPage = ({ users }) => {
+const Notifications: NextPage = ({ users }) => {
 
   // console.log('user token', users.userToken)
   const session = useSession();
   // console.log('session',session.data?.user)
-  console.log('session',session.data?.user)
+  // console.log('session',session.data?.user?.userToken)
 
-  const streamString = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibG90dGllIn0.1GfqRl6bJFhK-oQdsbHM-GVBvDLhROxp0Gi1N1qLC40'
+  // const streamString = (session.data?.user?.userToken)
   const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY as string;
   const appID = process.env.NEXT_PUBLIC_STREAM_APP_ID as string;
 
-
+//  alex token notifications
+// const notifyStream = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZSI6IioiLCJhY3Rpb24iOiIqIiwiZmVlZF9pZCI6Im5vdGlmaWNhdGlvbnNhbGV4In0.IAhcBtpLF1pLH_pqwmjN8ox8tvFWq6-exxQXpRxmDgI'
 
   return (
     <>
@@ -48,17 +49,16 @@ const Profile: NextPage = ({ users }) => {
         </Head>
 
         <main className={styles.main}>
-          <h1 className={styles.title}> Profile of {session.data?.user?.name} </h1>
+          <h1 className={styles.title}> Notifications</h1>
           {/* <h1 className={styles.title}>
             {" "}
             {users[2].username} {users[2].userToken}
           </h1> */}
 
-          <StreamApp apiKey={apiKey} appId={appID} token={streamString}>
-            <StatusUpdateForm />
+          <StreamApp apiKey={apiKey} appId={appID} token={notifyStream}>
 
             <NotificationDropdown notify />
-            <FlatFeed notify feedGroup="user"  Activity={(props) => (
+            <FlatFeed notify feedGroup="notifications"  Activity={(props) => (
             <Activity
               {...props}
               Footer={() => (
@@ -103,4 +103,4 @@ const Profile: NextPage = ({ users }) => {
 //   };
 // }
 
-export default Profile;
+export default Notifications;

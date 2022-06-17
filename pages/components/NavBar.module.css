@@ -1,0 +1,18 @@
+
+.header {
+    position:sticky;
+    top: 0;
+  }
+  
+
+  
+  
+  
+  .thumbnav {
+    align-items: center;
+    justify-content: center;
+    position:sticky !important;
+    bottom: 0;
+    overflow: hidden;
+  }
+  

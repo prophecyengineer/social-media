@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Container, Card, Button, Grid } from "@nextui-org/react";
 import { PrismaClient } from "@prisma/client";
+import NavBar from "../components/NavBar";
+import Header from "../components/Header";
 
 
 
@@ -16,6 +18,8 @@ const Home: NextPage = ({ users }) => {
 
   return (
     <>
+    <Header/>
+  
       <div className={styles.container}>
         <Head>
           <title>Home for</title>
@@ -25,19 +29,18 @@ const Home: NextPage = ({ users }) => {
 
         <main className={styles.main}>
           <h1 className={styles.title}> Home </h1>
+          <h2>users</h2>
           <ul>
             {users.map((user) => (
               <li className={styles.title} key={user.id}>
-                {user.username} {user.userToken}
+                {user.username} 
               </li>
             ))}
           </ul>
-
-          <Card className={styles.header}>
-            <Button onClick={signOut}>Sign Out</Button>
-          </Card>
+       
         </main>
       </div>
+      <NavBar/>
     </>
   );
 };

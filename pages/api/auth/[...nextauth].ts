@@ -49,7 +49,9 @@ const configuration = {
                 name: user.name,
                 username: user.username,
                 email: user.email,
-                userToken: user.userToken,
+                userFeedToken: user.userFeedToken,
+                userHomeToken: user.userHomeToken,
+                userNotifyToken: user.userNotifyToken,
                 isActive: user.isActive,
               };
               return userAccount;

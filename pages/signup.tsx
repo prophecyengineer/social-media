@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 
 const axios = require("axios").default;
 
-export default function Register() {
+export default function SignUp() {
   const router = useRouter();
 
   const [signupError, setSignupError] = useState('');
@@ -16,7 +16,7 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const registerUser = async (event) => {
+  const signupUser = async (event) => {
     event.preventDefault();
 
     const data = {
@@ -26,7 +26,7 @@ export default function Register() {
       password: password,
     };
 
-    await axios.post("/api/register", data);
+    await axios.post("/api/signup", data);
     signIn("credentials", {
       username,
       password,
@@ -44,9 +44,9 @@ export default function Register() {
 
   return (
     <>
-      <h1>Register</h1>
+      <h1>Sign Up</h1>
 
-      <form onSubmit={registerUser}>
+      <form onSubmit={signupUser}>
         <label>
           Name:{" "}
           <input
@@ -66,7 +66,7 @@ export default function Register() {
         <label>
           Email:{" "}
           <input
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -79,9 +79,8 @@ export default function Register() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        <button type="submit">Register User</button>
+        <button type="submit">Sign Up User</button>
 
-        <Link href="/register">Register</Link>
       </form>
     </>
   );
